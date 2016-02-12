@@ -45,16 +45,28 @@ function isDuplicate(array, value){
 	}
 	return false;
 }
-function removeDuplicate(array, value){
-	var result = [];
-	var resultIndex = 0;
+function isIn(array,value){
 	for (var i = 0; i < array.length; i++){
-		if (!isDuplicate(result, array[i])){
-			result[resultIndex] = array[i];
-			resultIndex++;
+		if (array[i] == value)
+			return true
+	}
+	return false
+}
+function removeRepeats(array) {
+	var filteredArray = [array[0]];
+	var filterIndex = 1;
+	var alreadyExists;
+	for (var i = 1; i < array.length; i++) {
+		for (var k = 0; k < filteredArray.length; k++) {
+			if (array[i] == filteredArray[k]) {alreadyExists = true; break}
+			else alreadyExists = false	
+		}
+		if (alreadyExists == false) {
+			filteredArray[filterIndex] = array[i];
+			filterIndex++;
 		}
 	}
-	return result
+	return filteredArray;
 }
 function isShortest(array){
 	// Given a list of route options, chooses shortest distance. Distance should be last value in subarray.
@@ -89,7 +101,6 @@ function findNeighbor(map,a){
 	}
 	return matches;
 }
-
 function makeRoute(map,start,finish){
 	// Creates a route from start to finish on map
 	if (directRoute(map,start,finish) != undefined){
@@ -104,25 +115,70 @@ function makeRoute(map,start,finish){
 	}
 }
 
-function condenser(array,a,b,c){
-	// Get from A to C via B
-	var x = findNeighbor(array, a);
-	var y = findNeighbor(array, b);
-	console.log(x);
-	console.log(y);
-	// for (var i = 0; i < y.length; i++){
-	// 	if (y[i] == c){
-	// 		var xdist = directRoute(roadMap,a,b);
-	// 		var ydist = directRoute(roadMap,b,c);
-	// 		return xdist + ydist;}}
-	for (var i = 0; i < y.length; i++){
-		console.log(findNeighbor(array,y[i]))
+
+function withinX(map,start,finish,moves){
+	var nodes = [];
+	var neighbors = [];
+	var temp= [];
+	// With one move
+	nodes[0] = findNeighbor(roadMap,start);
+	console.log('\nNodes[0]: ')
+	console.log(nodes[0]);
+
+	// With 2 moves
+	for (var i = 0; i < nodes[0].length;i++){
+		temp[i] = findNeighbor(roadMap,nodes[0][i]);
+		if(isIn(temp[i],finish)){console.log('Sucess!')}
 	}
+	nodes[1] = temp;
+	console.log('\nNodes[1]: ')
+	console.log(nodes[1]);
+
+	// With 3 moves
+	temp = [];
+	for (var i = 0; i < nodes[1][0].length;i++){
+		temp[i] = findNeighbor(roadMap,nodes[1][0][i]);
+		if(isIn(temp[i],finish)){['Sucess! Node: ',nodes[1][0][i]].join('')}
+	}
+	nodes[2] = temp;
+	console.log('\nNodes[2]: ')
+	console.log(nodes[2]);
+
+
+	// With 4 moves
+	temp = [];
+	var temp2 = [];
+	for (j = 0; j < nodes[2].length; j++){
+		temp2 = [];
+		for (k = 0; k < nodes[2][j].length; k++){
+			temp2[k] = findNeighbor(roadMap,nodes[2][j][k]);
+			if(isIn(temp2[k],finish)){['Sucess! Node: ',nodes[2][j][k]].join('')}
+		}
+		temp[j] = temp2;
+	}
+	nodes[3] = temp;
+	console.log('\nNodes[3]: ')
+	console.log(nodes[3]);
+
+	var temp3 = [];
+	for (i = 0; i < nodes[3].length; i++){
+		temp2 = [];
+		for (j = 0; j < nodes[3][i].length; j++){
+			temp3 = [];
+			for (k = 0; k < nodes[3][i][j].length; k++){
+				temp3[k] = findNeighbor(roadMap,nodes[3][i][j][k]);
+				if(isIn(temp3[k],finish)){console.log(['Sucess! Map: ',nodes[0],' --> ',nodes[1][0][i],' --> ',nodes[2][i][j],' --> ',nodes[3][i][j][k]].join(''))}
+			}
+			temp2[j] = temp3;
+		}
+		temp[i] = temp2;
+	}
+	nodes[4] = temp;
+	// console.log('\nNodes[4]: ')
+	// console.log(nodes[4])
+
 }
-
-console.log(condenser(roadMap,'A','B','D'));
-
-
+withinX(roadMap,'A','F',4)
 
 
 
