@@ -32,6 +32,7 @@ var routeTest = [['A','B','C','D','E','F',179],
 
 var testArray = [[['A','B'],['A','B','C']],[['D','E']],['F','G']];
 
+//WORKING FUNCTIONS
 function findNeighbor(map,x){
 	// Returns: [[neighbor,distance],[etc]]
 	var result = [], index = 0;
@@ -51,15 +52,23 @@ function findNeighbor(map,x){
 }
 function directRoute(map,x,y){
 	// Returns: true: distance / false: undefined
-}
-function isThere(array,x){
-	// Returns true/false
+	for (var i = 0; i < map.length; i++){
+		if ((map[i][0] == x && map[i][1] == y) || (map[i][0] == y && map[i][1] == x)){
+			return map[i][2]
+		}
+	}
 }
 function findNew(target,reference){
-	// Returns: [new elements]
-}
-function findShortest(array,targetIndex){
-	// Returns [minValue, index]
+	// Returns: [elements in target that aren't in reference]
+	var newElements = [];
+	var counter = 0;
+	for (var i = 0; i < target.length; i++){
+		if (!isThere(reference,target[i])){
+			newElements[counter] = target[i];
+			counter++;
+		}
+	}
+	return newElements;
 }
 
 // Combination & Addition functions
@@ -78,6 +87,14 @@ function addEveryOther(array,start){
 	}
 	return sum
 }
+function getEveryOther(array,start){
+	// Returns an array w/ every other element starting at either [0] or [1]
+	var result = [];
+	for (var i = start; i < array.length; i=i+2){
+		result.push(array[i])
+	}
+	return result
+}
 function addLast(array){
 	// Adds values at last index of an array
 	var sum = 0;
@@ -87,10 +104,27 @@ function addLast(array){
 	}
 	return sum
 }
+function isThere(array,x){
+	// Returns true if value is in array, otherwise false
+	if (array.indexOf(x) != -1){return true}
+	else return false
+}
 
+// STILL GOTTA MAKE
 
+function findShortest(array,targetIndex){
+	// Takes array of [[name, dist], [name, dist]] and which index to check. Returns [minValue, indexOfMin]
+	// array[min[1]] will be the location of the shortest option.
+	var min = [array[0],0];
+	var options = getEveryOther(combineResults(array),1);
+	for (var i = 0; i < options.length; i++){
+		if (options[i] < min[0][targetIndex]){min[0] = options[i]; min[1]= i;}
+	}
+	return min
+}
 
-
+var x = findShortest(findNeighbor(roadMap,'J'),1)
+console.log(findNeighbor(roadMap,'J')[1])
 
 
 
