@@ -57,12 +57,13 @@ function arrayNavigator(array,ladder){
 }
 
 function miracle(array){
-	for(var i = 0; i < array.length; i++){
-		newArray = array[i];
-		if (typeof(newArray) == 'string'){
-				console.log(newArray);
+	for(var i = 0, counter = array.length; i < counter; i++){
+		function inner(innerArray,newArray){
+			for (var j = 0; j < innerArray.length; j++){
+				console.log(innerArray[j])
+			}
 		}
-		if (typeof(newArray) != 'string'){return miracle(newArray)}
+		inner(array[i])
 	}
 }
 
