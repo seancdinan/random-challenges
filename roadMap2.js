@@ -30,12 +30,25 @@ var routeTest = [['A','B','C','D','E','F',179],
 								['A','B','K','G','F',89],
 								['A','B','K','G','E','F',170]];
 
-var testArray = [[['A','B'],['A','B','C']],[['A','B']],['A','B']];
+var testArray = [[['A','B'],['A','B','C']],[['D','E']],['F','G']];
 
 function findNeighbor(map,x){
 	// Returns: [[neighbor,distance],[etc]]
+	var result = [], index = 0;
+	for (var i = 0; i < map.length; i++){
+		if (map[i][0] == x){
+			result[index] = [map[i][1], map[i][2]];
+			index++;
+		}
+	}
+	for (var i = 0; i < map.length; i++){
+		if (map[i][1] == x){
+			result[index] = [map[i][0], map[i][2]];
+			index++;
+		}
+	}
+	return result
 }
-
 function directRoute(map,x,y){
 	// Returns: true: distance / false: undefined
 }
@@ -48,24 +61,56 @@ function findNew(target,reference){
 function findShortest(array,targetIndex){
 	// Returns [minValue, index]
 }
-function arrayNavigator(array,ladder){
-	if (ladder == undefined){ladder = [];}
-	//console.log(array[0])
-	//console.log(ladder)
-	if (typeof(array[0]) != 'string'){console.log('Not a string'); ladder.push(array[0]); return arrayNavigator(array[0],ladder)}
-	return ladder
-}
 
-function miracle(array){
-	for(var i = 0, counter = array.length; i < counter; i++){
-		function inner(innerArray,newArray){
-			for (var j = 0; j < innerArray.length; j++){
-				console.log(innerArray[j])
-			}
-		}
-		inner(array[i])
+// Combination & Addition functions
+function combineResults(array){
+	// Combines a mismatched array of arrays and strings into one array holding all the strings.
+	function allStrings(array){return array.every(function(i){return typeof(i) != 'object'})}
+	if (allStrings(array) == true){return array}
+	else {return combineResults(array.reduce(function(a,b){return a.concat(b)}))}
+}
+function addEveryOther(array,start){
+	// Add every other element starting with either 0 or 1
+	var sum = 0;
+	for (var i = start; i < array.length; i=i+2){
+		console.log(array[i])
+		sum += array[i];
 	}
+	return sum
+}
+function addLast(array){
+	// Adds values at last index of an array
+	var sum = 0;
+	for (var i = 0; i < array.length; i++){
+		last = array[i].length;
+		sum += array[i][last-1]
+	}
+	return sum
 }
 
 
-console.log(miracle(testArray));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
