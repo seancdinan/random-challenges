@@ -101,21 +101,18 @@ function findNeighbor(map,a){
 	}
 	return matches;
 }
-function makeRoute(map,start,finish){
-	// Creates a route from start to finish on map
-	if (directRoute(map,start,finish) != undefined){
-		var route = [start,finish,directRoute(map,start,finish)];
-		console.log(route);
+function stepsToString(array,lengths,target,counter){
+	// Checks to see how many dimensions down to go to reach a string
+	// Returns [lowest array holding just strings, # of steps to get to a string]
+	if (counter == undefined){counter = 0;}
+	if (lengths == undefined){lengths = []}
+	lengths[counter] = array.length;
+	if(typeof(array) != 'string'){
+		lengths[counter] = array.length;
+		return stepsToString(array[0],lengths,array,counter+1)
 	}
-	else {
-		var neighbors = findNeighbor(map,start);
-		for (var i = 0; i < neighbors.length; i++){
-			makeRoute(map,neighbors[i],finish)
-		}
-	}
+	return [lengths, counter];
 }
-
-
 function withinX(map,start,finish,moves){
 	var nodes = [];
 	var neighbors = [];
@@ -176,9 +173,26 @@ function withinX(map,start,finish,moves){
 	nodes[4] = temp;
 	// console.log('\nNodes[4]: ')
 	// console.log(nodes[4])
+}
+
+function makeRoute(map,start,finish,n){
+	var nodes = [];
+	nodes[0] = start;
 
 }
-withinX(roadMap,'A','F',4)
+
+var x = [[['A','B','C','D'],['D','F','C']],[['C','D','E'],['A','M','G']]];
+var y = [];
+for (var i = 0; i < x.length; i++){
+	for(var j = 0; j < stepsToString(x[i])[1]; j++){
+		console.log(x[i][j])
+	}
+}
+
+
+
+
+
 
 
 
