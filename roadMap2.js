@@ -1,3 +1,4 @@
+// Source material / Data
 var roadMap = [
 	['A','B',12],
 	['B','C',42],
@@ -24,15 +25,13 @@ var roadMap = [
 	['R','T',17],
 	['T','S',22]
 	];
-
 var routeTest = [['A','B','C','D','E','F',179],
 								['A','B','C','D','E','G','F',162],
 								['A','B','K','G','F',89],
 								['A','B','K','G','E','F',170]];
-
 var testArray = [[['A','B'],['A','B','C']],[['D','E']],['F','G']];
 
-//WORKING FUNCTIONS
+// Navigation Functions
 function findNeighbor(map,x){
 	// Returns: [[neighbor,distance],[etc]]
 	var result = [], index = 0;
@@ -70,7 +69,16 @@ function findNew(target,reference){
 	}
 	return newElements;
 }
-
+function findShortest(array,targetIndex){
+	// Takes array of [[name, dist], [name, dist]] and which index to check. Returns [minValue, indexOfMin]
+	// array[min[1]] will be the location of the shortest option.
+	var min = [array[0],0];
+	var options = getEveryOther(combineResults(array),1);
+	for (var i = 0; i < options.length; i++){
+		if (options[i] < min[0][targetIndex]){min[0] = options[i]; min[1]= i;}
+	}
+	return min
+}
 // Combination & Addition functions
 function combineResults(array){
 	// Combines a mismatched array of arrays and strings into one array holding all the strings.
@@ -111,20 +119,16 @@ function isThere(array,x){
 }
 
 // STILL GOTTA MAKE
-
-function findShortest(array,targetIndex){
-	// Takes array of [[name, dist], [name, dist]] and which index to check. Returns [minValue, indexOfMin]
-	// array[min[1]] will be the location of the shortest option.
-	var min = [array[0],0];
-	var options = getEveryOther(combineResults(array),1);
-	for (var i = 0; i < options.length; i++){
-		if (options[i] < min[0][targetIndex]){min[0] = options[i]; min[1]= i;}
+function buildWeb(map,currentEntry,n,storeage){
+	if (storeage == undefined){storeage = [];}
+	for (var i = 0; i < currentEntry.length; i++){
+		console.log(currentEntry[i])
+		if (typeof(currentEntry) == 'string'){console.log('Its a string')}
+		else return buildWeb(map,currentEntry[i],currentEntry.length)
 	}
-	return min
 }
 
-var x = findShortest(findNeighbor(roadMap,'J'),1)
-console.log(findNeighbor(roadMap,'J')[1])
+console.log(buildWeb(roadMap,testArray,4))
 
 
 
